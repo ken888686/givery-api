@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateRecipeDto } from './dtos/create-recipe.dto';
+import { UpdateRecipeDto } from './dtos/update-recipe.dto';
 import { Recipe } from './entities/recipe.entity';
 
 @Injectable()
@@ -43,5 +44,13 @@ export class RecipesService {
       ingredients: data.ingredients,
       cost: data.cost,
     };
+  }
+
+  async update(id: number, recipe: UpdateRecipeDto) {
+    return await this.recipeRepository.update({ id: id }, recipe);
+  }
+
+  async remove(id: number) {
+    return await this.recipeRepository.delete({ id: id });
   }
 }
