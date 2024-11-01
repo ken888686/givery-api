@@ -21,12 +21,12 @@ export class RecipesController {
   @HttpCode(HttpStatus.OK)
   async create(@Body() body: CreateRecipeDto) {
     if (
-      body === null ||
-      body.title === null ||
-      body.making_time === null ||
-      body.serves === null ||
-      body.ingredients === null ||
-      body.cost === null
+      Object.keys(body).length === 0 ||
+      body.title === undefined ||
+      body.making_time === undefined ||
+      body.serves === undefined ||
+      body.ingredients === undefined ||
+      body.cost === undefined
     ) {
       return {
         message: 'Recipe creation failed!',
@@ -59,7 +59,21 @@ export class RecipesController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() body: UpdateRecipeDto) {
+  async update(@Param('id') id: number, @Body() body?: UpdateRecipeDto) {
+    if (
+      Object.keys(body).length === 0 ||
+      body.title === undefined ||
+      body.making_time === undefined ||
+      body.serves === undefined ||
+      body.ingredients === undefined ||
+      body.cost === undefined
+    ) {
+      return {
+        message: 'Recipe creation failed!',
+        required: 'title, making_time, serves, ingredients, cost',
+      };
+    }
+
     await this.recipesService.update(id, body);
     const data = await this.recipesService.findOne(id);
     return {
