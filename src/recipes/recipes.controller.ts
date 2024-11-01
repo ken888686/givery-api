@@ -20,6 +20,7 @@ export class RecipesController {
   @Post()
   @HttpCode(HttpStatus.OK)
   async create(@Body() body: CreateRecipeDto) {
+    // Check if body is empty or missing required fields
     if (
       Object.keys(body).length === 0 ||
       body.title === undefined ||
@@ -34,6 +35,7 @@ export class RecipesController {
       };
     }
 
+    // Create recipe
     const data = await this.recipesService.create(body);
     return {
       message: 'Recipe successfully created!',
@@ -60,6 +62,7 @@ export class RecipesController {
 
   @Patch(':id')
   async update(@Param('id') id: number, @Body() body?: UpdateRecipeDto) {
+    // Check if body is empty or missing required fields
     if (
       Object.keys(body).length === 0 ||
       body.title === undefined ||
@@ -74,7 +77,10 @@ export class RecipesController {
       };
     }
 
+    // Update recipe
     await this.recipesService.update(id, body);
+
+    // Get the updated recipe
     const data = await this.recipesService.findOne(id);
     return {
       message: 'Recipe successfully updated!',
