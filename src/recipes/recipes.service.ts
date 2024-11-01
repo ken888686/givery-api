@@ -24,4 +24,16 @@ export class RecipesService {
       };
     });
   }
+
+  async findOne(id: number): Promise<RecipeDto> {
+    const data = await this.recipeRepository.findOne({ where: { id: id } });
+    return {
+      id: data.id,
+      title: data.title,
+      making_time: data.making_time,
+      serves: data.serves,
+      ingredients: data.ingredients,
+      cost: data.cost,
+    };
+  }
 }
